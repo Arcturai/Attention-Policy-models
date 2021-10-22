@@ -1,0 +1,61 @@
+%YAML 1.2
+---
+# trying using reduce_sum to summarize heads
+
+name: 'lc0apv4_t09'
+gpu: 1
+
+dataset:
+    input: '/media/datadrive01/Chess/lc0/data/t75data/*/'
+    train_ratio: 0.90
+    num_chunks: 10000000
+    allow_less_chunks: true
+    train_workers: 12
+    test_workers: 8
+    input_validation: '/media/datadrive01/Chess/lc0/data/validation_data(t75)/'
+
+training:
+    path: '/media/datadrive01/Chess/lc0/lczero-training/showboat_nets'
+    num_test_positions: 10000
+    batch_size: 1024
+    num_batch_splits: 4
+    swa: true
+    swa_output: true
+    swa_steps: 20
+    swa_max_n: 10
+    test_steps: 500
+    train_avg_report_steps: 500
+    validation_steps: 5000
+    total_steps: 100000
+    checkpoint_steps: 10000
+    renorm: false
+    lr_values:
+        - 0.2
+        - 0.02
+        - 0.005
+    lr_boundaries:
+        - 100000
+        - 130000
+    warmup_steps: 250
+    policy_loss_weight: 1.0
+    value_loss_weight:  0.6
+    moves_left_loss_weight: 0.1
+    q_ratio: 0.00
+    shuffle_size: 500000
+    mask_legal_moves: true
+    precision: 'single'
+
+model:
+    filters: 128                         # Number of filters
+    residual_blocks: 16                  # Number of blocks
+    se_ratio: 4                          # Squeeze Excite structural network architecture.
+    emb_size_pol: 128                    # embedding vector size
+    enc_layers_pol: 0                    # number of encoder layers
+    dff_pol_enc: 0                       # size of the largest dense layer in encoder layer ffn
+    d_model_pol_enc: 0                   # size of the query, key, and value vectors in encoder layers
+    n_heads_pol_enc: 0                   # number of attention heads in encoder layers
+    d_model_pol_hd: 256                  # size of the query and key vectors in final attn. layer
+    n_heads_pol_hd: 4                    # number of heads in final attn. layer
+    policy: 'attention'                  # new option: attention
+    value: 'wdl'
+    moves_left: 'v1'
