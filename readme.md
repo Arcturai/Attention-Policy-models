@@ -1,12 +1,12 @@
-This repository contains all of the onnx backend-compatible weights files for Attention Policy v4 and v5 that I have trained up to this point (`apv4_t16` is AKA. `apv5_t00`, which is the only v5 net so far). It also contains weights for the three 128x16b baseline nets, and lc0 network 744204 as an equivalent onnx conversion.
+This repository contains all of the onnx backend-compatible weights files for Attention Policy v4 and v5 that I have trained up to this point (`apv4_t16` is AKA. `apv5_t00`). It also contains weights for the 128x16b baseline nets with convolutional policy, and lc0 network 744204 -- converted to onnx using the same process.
 
-`apv4_t13` is missing because I accidentally wiped its SWA weights from the final training checkpoint-- a shame because it had the highest training accuracy out of out all 16 ap nets (although within error). It might be recoverable but I haven't bothered to try because it probably isn't worth it. `apv4_t07` uses the SWA weights from its 90k training chkpt, because it underwent a training spike at 100k and nosedived in all metrics. baselines 03 and 04 are relatively untested, because they recently finished training as of this release (Oct 21). `baseline01`, the first baseline, is not included because it was trained with a sub-optimal configuration and egregiously overfit the training data, so it is much weaker than the others.
+`apv4_t13` is missing because I accidentally wiped its SWA weights from the final training checkpoint-- a shame because it had the highest training accuracy out of out all 16 ap nets (although within error). It might be recoverable but I haven't bothered to try because it probably isn't worth it. `apv4_t07` uses the SWA weights from its 90k training chkpt, because it underwent a training spike at 100k and nosedived in all metrics. `baseline01`, the first baseline, is not included because it was incorrectly configured for training and egregiously overfit the training data, so it is much weaker than the others.
 
-`policy_attn_arch.txt` contains a brief but incomplete overview of the neural architecture of the policy head in attention policy v5
+`policy_attn_arch.txt` contains a brief but incomplete overview of the neural architecture of the policy head in attention policy v5.
 
-`lc0_apv4_docs.txt` groups each attention policy net into categories based on some high-level features of their architecture
+`lc0_apv4_docs.txt` groups each attention policy net into categories based on some high-level features of their architecture.
 
-The training configs for each network are also included to provide more details on the architecture of each net. All three baselines were trained using `128x16-se4_baseline02.yaml`. 
+The training configs for each network are also included to provide more details on the architecture of each net. All three baselines were trained using `configs/128x16-se4_baseline02.yaml`. 
 
 With exception of the baselines and apv4_t16, none of these nets can be retrained from their yaml configurations because the code in my training repository has gone through constant development and is not backwards-compatible through certain changes to network architecture. To retrain these nets, it would be necessary to roll back the repo to a previous version. However, there is no documentation for which nets were trained on which commit, and I can't even guarantee that certain nets were not trained with changes made in-between commits. However, retraining is probably not necessary because most of these nets are very similar with only one or two differences between them, and they all performed very similarly in training. Additional nets can be trained with the current v5 format, with either dynamic or static pawn promotion policy.
 
@@ -28,7 +28,7 @@ All nets were converted to be compatible with the onnx backend using the followi
 8. convert the saved model to onnx using tf2onnx (https://github.com/onnx/tensorflow-onnx/releases)
 9. using another python script and code from `net.py`, load the onnx model, resolve inconsistencies in the naming of input and output layers, and save the weights as a proto file
 
-I can provide the necessary scripts to anyone interested in doing it themselves.
+These instructions, and corresponding scripts, are also available at https://github.com/Arcturai/lczero-training.
 
 
 
