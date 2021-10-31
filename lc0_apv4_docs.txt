@@ -12,6 +12,8 @@ t11
 t12
 t15
 t16
+v5 t01
+hydra t00
 
 one
   mha:
@@ -36,6 +38,8 @@ t10
 t11
 t12
 t15
+v5 t01
+hydra t00
 
 multi-head policy
   mean summary:
@@ -73,6 +77,8 @@ t11
 t14  # mha also summarized before scaling
 t15
 t16  # mha also summarized before scaling
+v5 t01
+hydra t00
     after scaling:
 t12
 t13
